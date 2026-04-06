@@ -1,0 +1,11 @@
+# Dependencies for train_measure_vae.py (install with: pip install -r requirements-measure-vae.txt)
+# Use after: conda activate lsr-gpu and pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+seaborn
+pypianoroll
+pretty_midi
+tensorboardx
+music21
+click
+tqdm
+scipy
+scikit-learn

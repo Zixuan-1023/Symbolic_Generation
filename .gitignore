@@ -1,0 +1,10 @@
+.DS_Store
+
+# JUCE build artifacts
+ControlableSymbolicMusic/Builds/
+**/build/
+
+# Plugin binaries
+*.app
+*.component
+*.vst3

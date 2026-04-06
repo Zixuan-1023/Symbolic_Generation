@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+.pytest_cache/
+.mypy_cache/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Logs & local state
+logs/
+*.log
+
+# Local installers (never commit)
+Miniconda3-latest-Linux-x86_64.sh
+Miniconda*.sh
+
+# Hugging Face / torch cache (if ever under repo tree)
+.cache/
+**/hub/
+
+# --- MuseCoco: weights & bulky data (clone 后单独下载或自备) ---
+musecoco/2-attribute2music_model/checkpoints/
+musecoco/2-attribute2music_model/data/truncated_2560/
+musecoco/2-attribute2music_model/generation/
+
+# Stage1 BERT 数据/大 JSON（运行时非必须可不放仓库）
+musecoco/1-text2attribute_model/data/*.json
+
+# dataprepare 测试二进制
+musecoco/1-text2attribute_dataprepare/test/
+
+# legacy midi_model 里体积较大的权重副本（多目录重复）
+**/midiprocessor/legacy_tools/tools/midi_model/melody_model_new
+
+# MuseCoco 权重与运行时生成的大二进制
+musecoco/**/*.pt
+musecoco/**/*.pth
+musecoco/**/*.ckpt
+musecoco/1-text2attribute_model/infer_test.bin
+musecoco/2-attribute2music_model/data/infer_input/
+
+# Job 输出
+musecoco/runs/
+
+# --- AR-VAE：子模块内另有 .gitignore；父仓库只记录 submodule 指针 ---
+# 本地工作区若直接放在 Backend 下，忽略数据与权重
+ar-vae/data/
+ar-vae/models/
+ar-vae/runs/
+ar-vae/figs/
+ar-vae/**/*.pt
+ar-vae/**/*.pth
