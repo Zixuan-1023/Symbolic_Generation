@@ -37,20 +37,29 @@ class MidiMetrics:
 
 
 def _tempo_segments(
-    tempo_changes: List[Tuple[int, float]],
+    tempo_changes: Iterable,
     ticks_per_beat: int,
     max_tick: int,
 ) -> List[Tuple[int, int, float, float]]:
-    if not tempo_changes:
-        tempo_changes = [(0, 120.0)]
-    tempo_changes = sorted(tempo_changes, key=lambda x: x[0])
-    if tempo_changes[0][0] > 0:
-        tempo_changes.insert(0, (0, tempo_changes[0][1]))
+    # Support both (tick, bpm) tuples and miditoolkit.TempoChange objects.
+    parsed: List[Tuple[int, float]] = []
+    for item in tempo_changes or []:
+        if hasattr(item, "time") and hasattr(item, "tempo"):
+            parsed.append((int(item.time), float(item.tempo)))
+        else:
+            parsed.append((int(item[0]), float(item[1])))
+
+    if not parsed:
+        parsed = [(0, 120.0)]
+
+    parsed.sort(key=lambda x: x[0])
+    if parsed[0][0] > 0:
+        parsed.insert(0, (0, parsed[0][1]))
 
     segments: List[Tuple[int, int, float, float]] = []
     cur_sec = 0.0
-    for i, (tick, bpm) in enumerate(tempo_changes):
-        next_tick = tempo_changes[i + 1][0] if i + 1 < len(tempo_changes) else max_tick
+    for i, (tick, bpm) in enumerate(parsed):
+        next_tick = parsed[i + 1][0] if i + 1 < len(parsed) else max_tick
         sec_per_tick = 60.0 / (bpm * ticks_per_beat)
         segments.append((tick, next_tick, sec_per_tick, cur_sec))
         cur_sec += (next_tick - tick) * sec_per_tick
