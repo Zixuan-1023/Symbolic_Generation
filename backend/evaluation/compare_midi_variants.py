@@ -158,7 +158,11 @@ def compute_metrics(path: Path, label: Optional[str] = None) -> MidiMetrics:
     overlap_rate = (overlaps / total_notes) if total_notes > 0 else 0.0
 
     # Onset deviation to 16th grid (use first tempo)
-    base_bpm = midi.tempo_changes[0][1] if midi.tempo_changes else 120.0
+    if midi.tempo_changes:
+        first = midi.tempo_changes[0]
+        base_bpm = float(first.tempo) if hasattr(first, "tempo") else float(first[1])
+    else:
+        base_bpm = 120.0
     sec_per_beat = 60.0 / base_bpm
     grid = sec_per_beat / 4.0
     if notes and grid > 0:
